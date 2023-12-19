@@ -82,19 +82,23 @@ days = {
 }
 
 
+def add_padding():
+    return st.text(' '), st.text(' '), st.text(' '), st.text(' '), st.text(' '), st.text(' '), st.text(' ')
+
+
 def corr_matrix(df):
-    st.header('Correlation Matrix')
-    st.text('The correlation matrix reveals that there is a strong correlation between the posted speed limit, ')
+    coorColA, coorColB = st.columns(2)
+
     df = df.drop(['pedestrian', 'bicycle'], axis=1)
     sns.set(style="darkgrid")
     coor = df.corr()
-    # drop pedestrian and bicycle because they are not correlated
 
-    # display coor table
-    st.dataframe(coor)
-    # plot the correlation matrix
-    sns.heatmap(coor, cmap='viridis')
-    st.pyplot()
+    with coorColA:
+        sns.heatmap(coor, cmap='viridis')
+        st.pyplot()
+
+    with coorColB:
+        st.dataframe(coor)
 
 
 def temporal_frequency(df):
@@ -152,8 +156,6 @@ def show_map(df):
 
 def most_dangerous_streets(df):
     colA, colB = st.columns(2)
-
-    st.header('incidents by street & Intersection')
 
     with colA:
         sns.countplot(y='Street', data=df, order=df['Street'].value_counts().iloc[:10].index)
@@ -219,13 +221,17 @@ if __name__ == '__main__':
              'population density and traffic volume to identify areas of concern.')
 
     st.header('Data Analysis')
-    st.write('The data was analyzed temporally and spatially to identify trends and areas of concern. A correlation '
-             'matrix was created to identify the most correlated features.'
-             'The most correlated features were then evaluated in more detail. Hypothesis testing was used to '
-             'evaluate causation. The big questions that we are trying to answer are:'
-             '1. What are the causes of pedestrian accidents?'
-             '2. Given the causes, what can we do to reduce the number of accidents?'
-             '3. What interventions are teh easiest to implement and will have the biggest impact?')
+    st.divider()
+    st.write(
+        'First, an Objective was defined. We want to identfy causes of pedestrian accidents and evaluate solutions that maximze impact while minmizing cost.')
+    st.subheader('Descriptive Analysis')
+    st.write('todo: add descriptive analysis')
+    st.subheader('Diagnostic Analysis')
+    st.write('todo: add diagnostic analysis')
+    st.subheader('Predictive Analysis')
+    st.write('todo: add predictive analysis')
+    st.subheader('Prescriptive Analysis')
+    st.write('todo: add prescriptive analysis')
 
     st.header('Data Visualization')
     st.write('Charlie Mix did a fantastic job of visualizing the the data spatially. We wanted to build on his work by'
@@ -272,64 +278,50 @@ if __name__ == '__main__':
              'the highest incidents occur on Tuesdays and Fridays.  The lowest number of incidents occur on Sundays. '
              'Our hypothesis is that incidents are highly correlated with traffic volume.')
 
-    st.subheader('Time of Day')
-    st.subheader('the number of incidents peak around commute times, lunch time, and social hours')
-    st.write('incidents are low in early moring and gnerally trend up until 830pm. The number of incidents then '
-                'decreases')
-
-
-
-
-
-
-
-
     temporal_frequency(all_data)
 
     # time of day, light condition, weather, posted speed, alcohol, drugs,  fatal, pedestrian, bicycle
+    st.subheader('Time of Day')
+    st.divider()
 
-    st.header('Time of Day')
+    st.subheader('the number of incidents peak around commute times, lunch time, and social hours')
+    st.write('incidents are low in early moring and gnerally trend up until 830pm. The number of incidents then '
+             'decreases. Statistically significant increases occur during the morning commute, lunch time, and '
+             'social hours.')
+
     st.bar_chart(all_data['Time Num'].value_counts())
 
     # WEATHER
 
     st.header('Weather')
+    st.divider()
     st.bar_chart(all_data['Weather Code'].value_counts())
 
     # LIGHT CONDITION
 
     st.header('Light Condition')
+    st.divider()
     # convert the light condition to a string
     all_data['Light Condition'] = all_data['Light Condition'].map(light_conditions)
     st.bar_chart(all_data['Light Condition'].value_counts())
 
     # DISPLAY THE MOST DANGEROUS STREETS
-
+    st.subheader('Incidents by street & Intersection')
+    st.divider()
     most_dangerous_streets(all_data)
+    add_padding()
 
-    # grab the most correlated features
+    # CORRELATION MATRIX
+    st.subheader('Features that are highly correlated')
+    st.write('The correlation matrix reveals that there is a strong correlation between the posted speed limit, '
+             'alcohol and drug use, as well as the time of day. Lets look at these in more detail.')
+    st.divider()
+
     foo = pd.read_csv('df_corr.csv')
     corr_matrix(foo)
 
+    add_padding()
+
     # filter the correlation matrix to only show the most correlated values
 
-    threshold = 0.4
-    corr = serious_incidents.corr()
-    corr = corr[corr > threshold]
-    corr = corr[corr != 1.0]
-    st.dataframe(corr)
 
-    st.write('The correlation matrix reveals that there is a strong correlation between the posted speed limit, '
-             'alcohol and drug use, as well as the time of day. Lets look at these in more detail.')
-
-    st.header('Posted Speed')
-
-    # number of incidents by speed limit
-    st.subheader('Number of incidents by speed limit')
-    sns.countplot(x='Posted Speed', data=serious_incidents)
-    st.pyplot()
-
-    # perform hypothesis testing
-    st.subheader('Hypothesis Testing')
-    st.write('Hypothesis 1: the presence of lighting decreases the number of accidents')
-    st.write('Null Hypothesis: the presence of lighting does not decrease the number of accidents')
