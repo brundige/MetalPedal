@@ -175,7 +175,6 @@ def show_map(df):
         st.write(df.head())
 
 
-
 def most_dangerous_streets(df):
     colA, colB = st.columns(2)
 
@@ -196,7 +195,9 @@ def most_dangerous_streets(df):
 
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
-    # evaluate the data for serious incidents
+
+    # IMPORT DATA
+
     serious_incidents = pd.read_csv('serious.csv')
     all_data = pd.read_csv('ps_cleaned.csv')
 
@@ -210,10 +211,18 @@ if __name__ == '__main__':
 
     st.header('Data Description')
     st.write(
-        'This dataset contains information about incidents where a pedestrian or cyclist was involved in a collision with a vehicle. The dataset was collected from the Chattanooga Police Department and spans from June 2019 to present with daily updates. the dataset contains 27 columns and ~ 650 rows. The data can be found at https://data.chattlibrary.org/Transportation/Pedestrian-Safety-Incidents/5vex-7wgt/data.')
-    for key, value in columns.items():
-        st.subheader(key)
-        st.write(value['Description'])
+        'This dataset contains information about incidents where a pedestrian or cyclist was involved in a collision '
+        'with a vehicle. The dataset was collected from the Chattanooga Police Department and spans from June 2019 to '
+        'present with daily updates. the dataset contains 27 columns and ~ 650 rows. The data can be found at '
+        'https://data.chattlibrary.org/Transportation/Pedestrian-Safety-Incidents/5vex-7wgt/data.')
+
+    # Display Features in a Dropdown
+
+    feature = st.selectbox('Select a feature to learn more about it.', list(columns.keys()))
+    st.write('Description: ', columns[feature]['Description'])
+
+    # Discuss the data cleaning process
+
     st.header('Data Cleaning')
     st.write('The dataset is mostly complete and does not require much cleaning.  The following steps were taken to '
              'optimize the data for analysis. All of the incidents occured in teh city of Chattanooga in Hamilton '
@@ -226,6 +235,8 @@ if __name__ == '__main__':
              'were redundant with the latitude and longitude columns. Discrete features were one hot encoded. '
              'Features with multiple options were categoricaly encoded   The data was then split into two dataframes, '
              'one for all incidents and one for serious incidents.')
+
+    # Display the data cleaning process
 
     st.header('Data limitations')
     st.write('The dataset only contains incidents that were reported to the police.  There are likely many incidents '
@@ -241,76 +252,78 @@ if __name__ == '__main__':
              '2. Given the causes, what can we do to reduce the number of accidents?'
              '3. What interventions are teh easiest to implement and will have the biggest impact?')
 
-    st.write('data visualization')
+    st.header('Data Visualization')
+    st.write('Charlie Mix did a fantastic job of visualizing the the data spatially. We wanted to build on his work by'
+             'visualizing the data temporally and by other features.  We also wanted to identify features that were '
+             'correlated with more serious outcomes.')
+
+    st.header('impact on policy')
+    st.write(
+        'Data is only useful if it is used to make decisions. Limited Civic resources require us to be strategic as '
+        'we implement solutions to improve pedestrian safety'
+        'An Impact Matrix was created to evaluate the impact of each intervention and the effort required to '
+        'address it.')
+
     st.write('data conclusions')
     st.write('data recommendations')
     st.write('data next steps')
 
-    col1, col2 = st.columns(2)
-    with col1:
+    # MAP OF ALL INCIDENTS AND SERIOUS INCIDENTS
+
+    incident_col1, incident_col2 = st.columns(2)
+
+    with incident_col1:
         st.header('All Incidents')
         st.write(
             'Map of all incidents.')
         show_map(all_data)
 
-    with col2:
+    with incident_col2:
         st.header('Serious Incidents')
         st.write(
             'This section is a subset of the data that only includes accidents where there was a fatality or the '
             'patient was transported to the hospital.')
         show_map(serious_incidents)
 
-temporal_frequency(all_data)
+    temporal_frequency(all_data)
 
-# lets evaluate for other features
+    # lets evaluate for other features
 
-# time of day, light condition, weather, posted speed, alcohol, drugs, hit and run, fatal, pedestrian, bicycle
-st.header('Time of Day')
-st.bar_chart(all_data['Time Num'].value_counts())
-st.header('Weather')
-st.bar_chart(all_data['Weather Code'].value_counts())
+    # time of day, light condition, weather, posted speed, alcohol, drugs, hit and run, fatal, pedestrian, bicycle
+    st.header('Time of Day')
+    st.bar_chart(all_data['Time Num'].value_counts())
+    st.header('Weather')
+    st.bar_chart(all_data['Weather Code'].value_counts())
 
+    st.header('Light Condition')
+    # convert the light condition to a string
+    all_data['Light Condition'] = all_data['Light Condition'].map(light_conditions)
+    st.bar_chart(all_data['Light Condition'].value_counts())
 
+    most_dangerous_streets(all_data)
 
+    # grab the most correlated features
+    foo = pd.read_csv('df_corr.csv')
+    corr_matrix(foo)
 
+    # filter the correlation matrix to only show only the most correlated values
+    threshold = 0.4
+    corr = serious_incidents.corr()
+    corr = corr[corr > threshold]
+    corr = corr[corr != 1.0]
+    st.dataframe(corr)
 
+    st.write('The correlation matrix reveals that there is a strong correlation between the posted speed limit, '
+             'alcohol and drug use, as well as the time of day. Lets look at these in more detail.')
 
+    st.header('Posted Speed')
 
+    # number of incidents by speed limit
+    st.subheader('Number of incidents by speed limit')
+    sns.countplot(x='Posted Speed', data=serious_incidents)
+    st.pyplot()
 
-st.header('Light Condition')
-# convert the light condition to a string
-all_data['Light Condition'] = all_data['Light Condition'].map(light_conditions)
-st.bar_chart(all_data['Light Condition'].value_counts())
-
-most_dangerous_streets(all_data)
-
-# grab the most correlated features
-foo = pd.read_csv('df_corr.csv')
-corr_matrix(foo)
-
-# filter the correlation matrix to only show only the most correlated values
-threshold = 0.4
-corr = serious_incidents.corr()
-corr = corr[corr > threshold]
-corr = corr[corr != 1.0]
-st.dataframe(corr)
-
-st.write('The correlation matrix reveals that there is a strong correlation between the posted speed limit, '
-         'alcohol and drug use, as well as the time of day. Lets look at these in more detail.')
-
-st.header('Posted Speed')
-
-# number of incidents by speed limit
-st.subheader('Number of incidents by speed limit')
-sns.countplot(x='Posted Speed', data=serious_incidents)
-st.pyplot()
-
-# perform hypothesis testing
-st.subheader('Hypothesis Testing')
-st.write('Hypothesis 1: the presence of lighting decreases the number of accidents')
-st.write('Null Hypothesis: the presence of lighting does not decrease the number of accidents')
-
-
-
-
-
+    # perform hypothesis testing
+    st.subheader('Hypothesis Testing')
+    st.write('Hypothesis 1: the presence of lighting decreases the number of accidents')
+    st.write('Null Hypothesis: the presence of lighting does not decrease the number of accidents')
