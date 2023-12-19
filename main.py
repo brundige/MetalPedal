@@ -224,6 +224,7 @@ if __name__ == '__main__':
     st.write(
         'First, an Objective was defined. We want to identfy causes of pedestrian accidents and evaluate solutions that maximze impact while minmizing cost.')
     st.subheader('Descriptive Analysis')
+
     st.write('todo: add descriptive analysis')
     st.subheader('Diagnostic Analysis')
     st.write('todo: add diagnostic analysis')
@@ -231,6 +232,8 @@ if __name__ == '__main__':
     st.write('todo: add predictive analysis')
     st.subheader('Prescriptive Analysis')
     st.write('todo: add prescriptive analysis')
+
+    st.divider()
 
     st.header('Data Visualization')
     st.write('Charlie Mix did a fantastic job of visualizing the the data spatially. We wanted to build on his work by'
@@ -240,13 +243,10 @@ if __name__ == '__main__':
     st.header('impact on policy')
     st.write(
         'Data is only useful if it is used to make decisions. Limited Civic resources require us to be strategic as '
-        'we implement solutions to improve pedestrian safety'
-        'An Impact Matrix was created to evaluate the impact of each intervention and the effort required to '
+        'we implement solutions to improve pedestrian safety. An Impact Matrix was created to evaluate the impact of each intervention vs the effort required to '
         'address it.')
 
-    st.write('data conclusions')
-    st.write('data recommendations')
-    st.write('data next steps')
+
 
     # MAP OF ALL INCIDENTS AND SERIOUS INCIDENTS
 
@@ -273,7 +273,8 @@ if __name__ == '__main__':
     st.subheader('Monthly and Weekly Trends')
     st.subheader('Daylight and Traffic Volume could explain the monthly and weekly trends')
     st.write('The number of incidents peaks in Feburary and stays around the same untl May, when it begins to '
-             'decrease. In September, the number of incidents begins to increase again. Our hypothesis is that incdents are highly correlated with daylight'
+             'decrease. In September, the number of incidents begins to increase again. Our hypothesis is that '
+             'incdents are highly correlated with daylight'
              'the highest incidents occur on Tuesdays and Fridays.  The lowest number of incidents occur on Sundays. '
              'Our hypothesis is that incidents are highly correlated with traffic volume.')
 
@@ -320,6 +321,11 @@ if __name__ == '__main__':
     corr_matrix(foo)
 
     add_padding()
+
+    st.divider()
+    st.write('data conclusions')
+    st.write('data recommendations')
+    st.write('data next steps')
 
     # filter the correlation matrix to only show the most correlated values
 
