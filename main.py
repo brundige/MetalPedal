@@ -1,10 +1,10 @@
-import pandas as pd
+
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
 
 import seaborn as sns
-import numpy as np
+
 from matplotlib import pyplot as plt
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
