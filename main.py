@@ -191,7 +191,7 @@ if __name__ == '__main__':
         'This dataset contains information about incidents where a pedestrian or cyclist was involved in a collision '
         'with a vehicle. The dataset was collected from the Chattanooga Police Department and spans from June 2019 to '
         'present with daily updates. the dataset contains 27 columns and ~ 650 rows. The data can be found at '
-        'https://data.chattlibrary.org/Transportation/Pedestrian-Safety-Incidents/5vex-7wgt/data.')
+        'https://www.chattadata.org/Public-Safety/Pedestrian-Involved-Vehicle-Incidents/br4j-7khg/about_data')
 
     # Display Features in a Dropdown
 
@@ -202,14 +202,13 @@ if __name__ == '__main__':
 
     st.header('Data Cleaning')
     st.write('The dataset is mostly complete and does not require much cleaning.  The following steps were taken to '
-             'optimize the data for analysis. All of the incidents occured in teh city of Chattanooga in Hamilton '
-             'county, the city and county columns were dropped. The mile post column was dropped because it was '
+             'optimize the data for analysis. All of the incidents occured in the city of Chattanooga in Hamilton '
+             'county, therefore the city and county columns were dropped. The mile post column was dropped because it was'
              'mostly null values.  The location column was dropped because it was redundant with the latitude and '
              'longitude columns.  The location WKT column was dropped because it was not needed.  The time column was '
              'dropped because it was redundant with the time num column.  The incident number column was dropped '
              'because it was not needed.  The incident date column was dropped because it was redundant with the '
-             'year, month, and day of week columns.  The street and intersection columns were dropped because they '
-             'were redundant with the latitude and longitude columns. Discrete features were one hot encoded. '
+             'year, month, and day of week columns.  Discrete features were one hot encoded. '
              'Features with multiple options were categoricaly encoded   The data was then split into two dataframes, '
              'one for all incidents and one for serious incidents.')
 
@@ -218,7 +217,7 @@ if __name__ == '__main__':
     st.header('Data limitations')
     st.write('The dataset only contains incidents that were reported to the police.  There are likely many incidents '
              'that were not reported. Utilty could be added by evaluating the data against other datasets such as '
-             'population density and traffic volume to identify areas of concern.')
+             'population density and traffic volume to create a model that predicts the number of incidents that based on population growth and traffic volume.')
 
     st.header('Data Analysis')
     st.divider()
