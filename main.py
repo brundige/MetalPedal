@@ -260,6 +260,30 @@ if __name__ == '__main__':
             'patient was transported to the hospital.')
         show_map(serious_incidents)
 
+    st.subheader('Temporal Analasys')
+    st.write('The data was analyzed temporally to identify trends and areas of concern.'
+             'Data was analyzed by year, month, and day of the week.  The data was also analyzed by time of day.'
+             'From 2018-2023, the number of incidents has been generally increasing.  There was a sharp increase in '
+             'in 2021')
+    st.subheader('Monthly and Weekly Trends')
+    st.subheader('Daylight and Traffic Volume could explain the monthly and weekly trends')
+    st.write('The number of incidents peaks in Feburary and stays around the same untl May, when it begins to '
+             'decrease. In September, the number of incidents begins to increase again. Our hypothesis is that incdents are highly correlated with daylight'
+             'the highest incidents occur on Tuesdays and Fridays.  The lowest number of incidents occur on Sundays. '
+             'Our hypothesis is that incidents are highly correlated with traffic volume.')
+
+    st.subheader('Time of Day')
+    st.subheader('the number of incidents peak around commute times, lunch time, and social hours')
+    st.write('incidents are low in early moring and gnerally trend up until 830pm. The number of incidents then '
+                'decreases')
+
+
+
+
+
+
+
+
     temporal_frequency(all_data)
 
     # time of day, light condition, weather, posted speed, alcohol, drugs,  fatal, pedestrian, bicycle
