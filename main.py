@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
@@ -125,30 +124,6 @@ def temporal_frequency(df):
         # set the xticks to the months
         plt.xticks(rotation=45)
         st.pyplot()
-
-
-def is_hit_and_run():
-    # get the number of hit and runs and graph by year and location
-    st.header('Hit and Run')
-    hit_and_run = df[df['Hit and Run'] == 1]
-    st.dataframe(hit_and_run)
-    sns.countplot(x='Year', data=hit_and_run)
-    st.pyplot()
-
-
-def is_fatal():
-    st.header('Fatal')
-    fatal = df[df['Fatal'] == 1]
-    st.dataframe(fatal)
-    sns.countplot(x='Year', data=fatal)
-    st.pyplot()
-
-
-def pedVsBicycle():
-    st.header('Pedestrian vs Bicycle')
-    # create a new df with just pedestrian and bicycle
-    ped_bike = df[['pedestrian', 'bicycle']]
-    # get the sum of the values
 
 
 def show_map(df):
@@ -287,18 +262,24 @@ if __name__ == '__main__':
 
     temporal_frequency(all_data)
 
-    # lets evaluate for other features
+    # time of day, light condition, weather, posted speed, alcohol, drugs,  fatal, pedestrian, bicycle
 
-    # time of day, light condition, weather, posted speed, alcohol, drugs, hit and run, fatal, pedestrian, bicycle
     st.header('Time of Day')
     st.bar_chart(all_data['Time Num'].value_counts())
+
+    # WEATHER
+
     st.header('Weather')
     st.bar_chart(all_data['Weather Code'].value_counts())
+
+    # LIGHT CONDITION
 
     st.header('Light Condition')
     # convert the light condition to a string
     all_data['Light Condition'] = all_data['Light Condition'].map(light_conditions)
     st.bar_chart(all_data['Light Condition'].value_counts())
+
+    # DISPLAY THE MOST DANGEROUS STREETS
 
     most_dangerous_streets(all_data)
 
@@ -306,7 +287,8 @@ if __name__ == '__main__':
     foo = pd.read_csv('df_corr.csv')
     corr_matrix(foo)
 
-    # filter the correlation matrix to only show only the most correlated values
+    # filter the correlation matrix to only show the most correlated values
+
     threshold = 0.4
     corr = serious_incidents.corr()
     corr = corr[corr > threshold]
