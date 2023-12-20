@@ -194,12 +194,7 @@ if __name__ == '__main__':
     serious_incidents = load_data('serious.csv')
 
     st.title('Pedestrian Safety in Chattanooga')
-    st.write(
-        'This dataset piggybacks off of the amazing work that Charlie Mix did in his project "Pedestrian Safety in '
-        'Chattanooga".  Tim Mooreland raised some questions about how we could use this data to help improve '
-        'pedestrian safety in Chattanooga. A good first step is to evaluate the data temporally and spatially to see '
-        'if there are any trends that we can identify.  This will help us to identify areas of concern and to develop '
-        'a plan to address them.')
+    st.write('	Public support for pedestrian safety is at an all-time high. Recently, Charlie MIX from UTC  built on the data that the City of Chattanooga has been collecting. Rapid residential downtown growth and a vehicle-centric infrastrutucture have created high risk zones for pedestrians and cyclists.  The constant change of cities requires systematic assessment of problems through unbiased data gathering, analysis , and implementation.  Performing problem focused data analysis is crucial to identifying causes for pedestrian and developing solutions. Chattanooga’s elected and appointed officials recognize the need  to advocate for the safety of its citizens thru policy and infrastructure and are committed to a “ Vision Zero “ goal.')
 
     st.header('Data Description')
     st.write(
