@@ -17,6 +17,17 @@ light_conditions = {
     6: "Unknown"
 }
 
+weather_codes = {
+    0: 'Clear',
+    1: 'Rain',
+    2: 'Unknown',
+    3: 'Cloudy',
+    4: 'Other',
+    5: 'Fog',
+    6: 'Severe Cross-Winds'
+}
+
+
 columns = {
     "Incident Number": {"Description": "CPD Incident Number that is unique to each incident.", "Type": "Plain Text"},
     "Incident Date": {"Description": "Date the vehicle incident occurred.", "Type": "Date & Time"},
@@ -170,13 +181,17 @@ def most_dangerous_streets(df):
         st.pyplot()
 
 
+@st.cache_data
+def load_data(csv):
+    return pd.read_csv(csv)
+
+
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
 
     # IMPORT DATA
-
-    serious_incidents = pd.read_csv('serious.csv')
-    all_data = pd.read_csv('ps_cleaned.csv')
+    all_data = load_data('ps_cleaned.csv')
+    serious_incidents = load_data('serious.csv')
 
     st.title('Pedestrian Safety in Chattanooga')
     st.write(
@@ -246,8 +261,6 @@ if __name__ == '__main__':
         'we implement solutions to improve pedestrian safety. An Impact Matrix was created to evaluate the impact of each intervention vs the effort required to '
         'address it.')
 
-
-
     # MAP OF ALL INCIDENTS AND SERIOUS INCIDENTS
 
     incident_col1, incident_col2 = st.columns(2)
@@ -295,6 +308,8 @@ if __name__ == '__main__':
 
     st.header('Weather')
     st.divider()
+    # convert the weather code to a string
+    all_data['Weather Code'] = all_data['Weather Code'].map(weather_codes)
     st.bar_chart(all_data['Weather Code'].value_counts())
 
     # LIGHT CONDITION
@@ -328,5 +343,3 @@ if __name__ == '__main__':
     st.write('data next steps')
 
     # filter the correlation matrix to only show the most correlated values
-
-
