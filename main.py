@@ -96,7 +96,7 @@ days = {
 def add_padding():
     return st.text(' '), st.text(' '), st.text(' '), st.text(' '), st.text(' '), st.text(' '), st.text(' ')
 
-
+@st.cache_data
 def corr_matrix(df):
     coorColA, coorColB = st.columns(2)
 
@@ -111,7 +111,7 @@ def corr_matrix(df):
     with coorColB:
         st.dataframe(coor)
 
-
+@st.cache_data
 def temporal_frequency(df):
     col1, col2, col3 = st.columns(3)
 
@@ -141,6 +141,7 @@ def temporal_frequency(df):
         st.pyplot()
 
 
+@st.cache_data
 def show_map(df):
     try:
         layers = {
@@ -164,7 +165,7 @@ def show_map(df):
         st.error(e)
         st.write(df.head())
 
-
+@st.cache_data
 def most_dangerous_streets(df):
     colA, colB = st.columns(2)
 
@@ -194,7 +195,15 @@ if __name__ == '__main__':
     serious_incidents = load_data('serious.csv')
 
     st.title('Pedestrian Safety in Chattanooga')
-    st.write('	Public support for pedestrian safety is at an all-time high. Recently, Charlie MIX from UTC  built on the data that the City of Chattanooga has been collecting. Rapid residential downtown growth and a vehicle-centric infrastrutucture have created high risk zones for pedestrians and cyclists.  The constant change of cities requires systematic assessment of problems through unbiased data gathering, analysis , and implementation.  Performing problem focused data analysis is crucial to identifying causes for pedestrian and developing solutions. Chattanooga’s elected and appointed officials recognize the need  to advocate for the safety of its citizens thru policy and infrastructure and are committed to a “ Vision Zero “ goal.')
+    st.write(
+        'Public support for pedestrian safety is at an all-time high. Recently, Charlie MIX from UTC  built on '
+             'the data that the City of Chattanooga has been collecting. Rapid residential downtown growth and a '
+             'vehicle-centric infrastrutucture have created high risk zones for pedestrians and cyclists.  The '
+             'constant change of cities requires systematic assessment of problems through unbiased data gathering, '
+             'analysis , and implementation.  Performing problem focused data analysis is crucial to identifying '
+             'causes for pedestrian and developing solutions. Chattanooga’s elected and appointed officials recognize '
+             'the need  to advocate for the safety of its citizens thru policy and infrastructure and are committed '
+             'to a “ Vision Zero “ goal.')
 
     st.header('Data Description')
     st.write(
